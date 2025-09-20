@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>RD — Signature Portfolio</title>
+    <meta
+      name="description"
+      content="RD — Award-ready single page photography portfolio. Glassmorphism, animated gradients, preloader, theme toggle, filters, lightbox, testimonials."
+    />
+
+    <!-- Fonts & Icons -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <style>
+      /* -------------------- ROOT & THEME -------------------- */
+      :root {
+        --bg-a: #071125; /* deep navy */
+        --bg-b: #0b2540; /* teal-blue */
+        --glass: rgba(255, 255, 255, 0.06);
+        --glass-2: rgba(255, 255, 255, 0.03);
+        --muted: rgba(255, 255, 255, 0.85);
+        --accent-1: #00d4ff;
+        --accent-2: #8a4dff;
+        --accent-3: #ff6a88;
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --radius: 18px;
+        --maxw: 1200px;
+      }
+      body.light {
+        --bg-a: #f6fbff;
+        --bg-b: #eaf6ff;
+        --glass: rgba(0, 0, 0, 0.03);
+        --glass-2: rgba(0, 0, 0, 0.02);
+        --muted: rgba(10, 10, 10, 0.86);
+        --glass-border: rgba(10, 10, 10, 0.06);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto,
+          'Helvetica Neue', Arial;
+        color: var(--muted);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      /* -------------------- Animated Gradient Background -------------------- */
+      body {
+        background: radial-gradient(
+            600px 400px at 10% 10%,
+            rgba(138, 77, 255, 0.12),
+            transparent 8%
+          ),
+          radial-gradient(
+            500px 350px at 90% 90%,
+            rgba(0, 212, 255, 0.08),
+            transparent 8%
+          ),
+          linear-gradient(180deg, var(--bg-a), var(--bg-b));
+        transition: background 600ms ease, color 300ms ease;
+        overflow-x: hidden;
+        padding: 0 20px;
+      }
+
+      @keyframes bg-move {
+        0% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-20px) rotate(2deg);
+        }
+        100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+      }
+
+      /* -------------------- PRELOADER -------------------- */
+      #preloader {
+        position: fixed;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          rgba(2, 6, 23, 0.95),
+          rgba(2, 6, 23, 0.75)
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+      }
+      .pre-box {
+        width: 96px;
+        height: 96px;
+        border-radius: 18px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.02),
+          rgba(255, 255, 255, 0.01)
+        );
+        border: 1px solid var(--glass-border);
+        backdrop-filter: blur(8px);
+      }
+      .spinner {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        border: 5px solid rgba(255, 255, 255, 0.06);
+        border-top-color: var(--accent-1);
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .pre-text {
+        font-size: 12px;
+        margin-top: 10px;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      /* -------------------- CONTAINER & HEADER -------------------- */
+      .wrap {
+        max-width: var(--maxw);
+        margin: 28px auto;
+      }
+      header {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 18px;
+        width: calc(100% - 40px);
+        max-width: var(--maxw);
+        z-index: 1000;
+        border-radius: 14px;
+        padding: 10px 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.02),
+          rgba(255, 255, 255, 0.01)
+        );
+        border: 1px solid var(--glass-border);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 10px 30px rgba(2, 6, 23, 0.6);
+        transition: transform 0.35s ease, opacity 0.35s ease;
+      }
+      header.hidden {
+        transform: translate(-50%, -120%);
+        opacity: 0;
+      }
+      .brand {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .logo {
+        width: 56px;
+        height: 56px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+        color: #04111a;
+      }
+      .brand .title {
+        font-family: 'Playfair Display', serif;
+        font-size: 18px;
+      }
+
+      nav ul {
+        display: flex;
+        gap: 16px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      nav a {
+        color: var(--muted);
+        text-decoration: none;
+        padding: 8px;
+        border-radius: 10px;
+        font-weight: 600;
+      }
+      nav a:hover {
+        color: #fff;
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.03),
+          rgba(0, 0, 0, 0.03)
+        );
+      }
+
+      .actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .icon {
+        display: inline-grid;
+        place-items: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        cursor: pointer;
+      }
+      .hire {
+        padding: 10px 14px;
+        border-radius: 12px;
+        background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+        border: none;
+        color: #04111a;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      /* -------------------- HERO -------------------- */
+      .hero {
+        display: grid;
+        grid-template-columns: 1fr 450px;
+        gap: 25px;
+        align-items: start;
+        margin-top: 50px !important;
+      }
+      .hero-card {
+        padding: 32px;
+        border-radius: 20px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.02),
+          rgba(255, 255, 255, 0.01)
+        );
+        border: 1px solid var(--glass-border);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 20px 60px rgba(2, 6, 23, 0.6);
+        animation: bgPulse 8s ease-in-out infinite;
+        margin-top: 80px;
+      }
+      @keyframes bgPulse {
+        0% {
+          filter: brightness(1);
+        }
+        50% {
+          filter: brightness(1.03);
+        }
+        100% {
+          filter: brightness(1);
+        }
+      }
+
+      .hero h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 44px;
+        margin: 0 0 8px;
+        color: #fff;
+        line-height: 1;
+      }
+      .lead {
+        font-size: 16px;
+        margin-bottom: 18px;
+        color: rgba(255, 255, 255, 0.9);
+      }
+      .hero .cta {
+        display: flex;
+        gap: 12px;
+      }
+
+      /* Floating small gallery */
+      .mini-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .mini-row {
+        display: flex;
+        gap: 12px;
+      }
+      .mini img {
+        width: 200px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 12px;
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 10px 30px rgba(2, 6, 23, 0.45);
+      }
+
+      /* Parallax title */
+      .tagline {
+        font-size: 13px;
+        color: var(--muted);
+        letter-spacing: 1px;
+      }
+
+      /* -------------------- SECTIONS -------------------- */
+      section {
+        margin-top: 36px;
+      }
+      h2.section-title {
+        font-size: 24px;
+        margin: 0 0 14px;
+        color: #fff;
+      }
+
+      /* Services */
+      .services {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+      }
+      .service {
+        padding: 18px;
+        border-radius: 14px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.02),
+          rgba(255, 255, 255, 0.01)
+        );
+        border: 1px solid var(--glass-border);
+        backdrop-filter: blur(8px);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+      }
+      .service:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 22px 60px rgba(2, 6, 23, 0.6);
+      }
+      .service i {
+        font-size: 20px;
+        margin-bottom: 8px;
+        color: var(--accent-1);
+      }
+
+      /* Portfolio */
+      .controls {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 18px;
+      }
+      .chip {
+        padding: 8px 12px;
+        border-radius: 999px;
+        <!-- background: rgba(174, 94, 94, 0.02); -->
+        border: 1px solid var(--glass-border);
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .chip.active {
+        background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+        color: #bcbebf;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 18px;
+      }
+      .card {
+        position: relative;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid var(--glass-border);
+        background: linear-gradient(
+          180deg,
+          rgba(86, 52, 52, 0.01),
+          rgba(255, 255, 255, 0.005)
+        );
+        backdrop-filter: blur(6px);
+        cursor: pointer;
+        transform: translateY(24px);
+        opacity: 0;
+        transition: all 650ms cubic-bezier(0.2, 0.9, 0.2, 1);
+      }
+      .card.revealed {
+        transform: none;
+        opacity: 1;
+      }
+      .card img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        display: block;
+      }
+      .meta {
+        padding: 12px;
+      }
+      .meta h4 {
+        margin: 0 0 6px;
+        color: #fff;
+      }
+      .meta p {
+        margin: 0;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.75);
+      }
+
+      /* Lightbox */
+      .lightbox {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(2, 6, 23, 0.8);
+        z-index: 10010;
+      }
+      .lightbox.open {
+        display: flex;
+      }
+      .lightbox img {
+        max-width: 92%;
+        max-height: 86%;
+        border-radius: 10px;
+        box-shadow: 0 22px 80px rgba(0, 0, 0, 0.7);
+        transform: scale(0.96);
+        animation: zoomIn 0.35s ease forwards;
+      }
+      @keyframes zoomIn {
+        to {
+          transform: scale(1);
+        }
+      }
+
+      /* Testimonials */
+      .testi-wrap {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .testi {
+        padding: 16px;
+        border-radius: 12px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.02),
+          rgba(255, 255, 255, 0.01)
+        );
+        border: 1px solid var(--glass-border);
+        backdrop-filter: blur(6px);
+      }
+      .avatar {
+        width: 56px;
+        height: 56px;
+        border-radius: 10px;
+        object-fit: cover;
+        margin-right: 12px;
+      }
+      .testi-row {
+        display: flex;
+        align-items: center;
+      }
+
+      /* Contact */
+      .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 360px;
+        gap: 16px;
+      }
+      form {
+        padding: 18px;
+        border-radius: 12px;
+        border: 1px solid var(--glass-border);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.01),
+          rgba(255, 255, 255, 0.005)
+        );
+        backdrop-filter: blur(6px);
+      }
+      input,
+      textarea {
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        background: transparent;
+        color: var(--muted);
+        outline: none;
+      }
+      textarea {
+        min-height: 140px;
+      }
+
+      /* Toast */
+      .toast {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+        padding: 12px 16px;
+        border-radius: 12px;
+        color: #04111a;
+        box-shadow: 0 10px 30px rgba(2, 6, 23, 0.6);
+        display: none;
+      }
+
+      footer {
+        margin: 28px 0 80px;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      /* Responsive */
+      @media (max-width: 1000px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+        .mini img {
+          width: 160px;
+          height: 100px;
+        }
+        .contact-grid {
+          grid-template-columns: 1fr;
+        }
+        .testi-wrap {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 520px) {
+        nav ul {
+          display: none;
+        }
+      }
+      /* small accessibility focus outline when navigating by keyboard */
+      body.show-focus :focus {
+        outline: 3px solid rgba(0, 212, 255, 0.25);
+        outline-offset: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- PRELOADER -->
+    <div id="preloader" aria-hidden="false">
+      <div class="pre-box" role="status" aria-live="polite">
+        <div class="spinner" aria-hidden="true"></div>
+        <div class="pre-text">RD Portfolio</div>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <!-- HEADER -->
+      <header id="siteHeader" role="banner">
+        <div class="brand" aria-hidden="false">
+          <div class="logo" aria-hidden="true">RD</div>
+          <div>
+            <div class="title">RD — Signature Photography</div>
+            <div style="font-size: 12px; color: var(--muted)">
+              Cinematic • Editorial • Intimate
+            </div>
+          </div>
+        </div>
+
+        <nav role="navigation" aria-label="Main navigation">
+          <ul>
+            <li><a href="#portfolio">Work</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+
+        <div
+          class="actions"
+          style="display: flex; gap: 10px; align-items: center"
+        >
+          <button
+            class="icon"
+            id="themeToggle"
+            aria-label="Toggle theme"
+            title="Toggle theme"
+          >
+            <i class="fa-solid fa-moon" aria-hidden="true"></i>
+          </button>
+          <button
+            class="hire"
+            onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})"
+          >
+            Hire Me
+          </button>
+        </div>
+      </header>
+
+      <!-- HERO -->
+      <main>
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-card" id="heroCard">
+            <div class="tagline">Visual stories — framed with intent</div>
+            <h1 id="hero-title">
+              Crafting photographs that feel like memories
+            </h1>
+            <p class="lead">
+              I blend editorial lighting with documentary storytelling to create
+              images that hold silence, laughter and truth. Available for
+              portrait, wedding and destination shoots.
+            </p>
+
+            <div class="cta">
+              <button
+                class="hire"
+                onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})"
+              >
+                Explore Work
+              </button>
+              <button
+                class="icon"
+                onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})"
+              >
+                <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+              </button>
+            </div>
+
+            <div
+              style="
+                margin-top: 18px;
+                display: flex;
+                gap: 12px;
+                align-items: center;
+              "
+            >
+              <div style="font-weight: 700; color: #fff">200+ Photos</div>
+              <div style="font-size: 13px; color: var(--muted)">15 Awards</div>
+              <div style="font-size: 13px; color: var(--muted)">
+                Available worldwide
+              </div>
+            </div>
+          </div>
+
+          <aside class="mini-grid" aria-hidden="true">
+            <!-- <div class="mini-row">
+              <img
+                src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=800&auto=format&fit=crop"
+                alt="mini1"
+              />
+              <img
+                src="https://images.unsplash.com/photo-1508672019048-805c876b67e2?q=80&w=800&auto=format&fit=crop"
+                alt="mini2"
+              />
+            </div> -->
+            <div class="mini-row">
+              <img
+                src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=800&auto=format&fit=crop"
+                alt="mini3"
+              />
+              <img
+                src="https://images.unsplash.com/photo-1504203700686-0f8a60ef8c3a?q=80&w=800&auto=format&fit=crop"
+                alt="mini4"
+              />
+            </div>
+          </aside>
+        </section>
+
+        <!-- SERVICES -->
+        <section id="services" class="section" aria-labelledby="services-title">
+          <h2 id="services-title" class="section-title">Services</h2>
+          <div class="services" role="list">
+            <div class="service" role="listitem">
+              <i class="fa-solid fa-camera-retro" aria-hidden="true"></i>
+              <h4>Portrait Sessions</h4>
+              <p>
+                Creative single-person sessions, natural light and minimal
+                retouching. Delivery within 48h. <strong>From ₹6,000</strong>
+              </p>
+            </div>
+            <div class="service" role="listitem">
+              <i class="fa-solid fa-heart" aria-hidden="true"></i>
+              <h4>Weddings & Elopements</h4>
+              <p>
+                Full-day coverage, second shooter available, cinematic wedding
+                films on request. <strong>Packages from ₹50,000</strong>
+              </p>
+            </div>
+            <div class="service" role="listitem">
+              <i class="fa-solid fa-plane-departure" aria-hidden="true"></i>
+              <h4>Destination</h4>
+              <p>
+                Editorial travel photography for brands and personal projects.
+                Logistics & travel included — custom quotes on request.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- PORTFOLIO -->
+        <section
+          id="portfolio"
+          class="section"
+          aria-labelledby="portfolio-title"
+        >
+          <h2 id="portfolio-title" class="section-title">Selected Work</h2>
+          <div class="controls" role="tablist" aria-label="Portfolio filters">
+            <button class="chip active" data-filter="*">All</button>
+            <button class="chip" data-filter="portrait">Portrait</button>
+            <button class="chip" data-filter="travel">Travel</button>
+            <button class="chip" data-filter="wedding">Wedding</button>
+            <button class="chip" data-filter="street">Street</button>
+          </div>
+
+          <div id="grid" class="grid" aria-live="polite" aria-busy="false">
+            <!-- populated by JS -->
+          </div>
+        </section>
+
+        <!-- TESTIMONIALS -->
+        <section
+          id="testimonials"
+          class="section"
+          aria-labelledby="testimonials-title"
+        >
+          <h2 id="testimonials-title" class="section-title">Testimonials</h2>
+          <div class="testi-wrap" role="list">
+            <article class="testi" role="listitem">
+              <div class="testi-row">
+                <img
+                  class="avatar"
+                  src="https://images.unsplash.com/photo-1594616838951-c155f8d978a0?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  alt="Ashima R"
+                />
+                <div>
+                  <strong>Ashima R.</strong>
+                  <div style="font-size: 13px; color: var(--muted)">
+                    Bride, New Delhi
+                  </div>
+                </div>
+              </div>
+              <p style="margin-top: 12px">
+                "RD made our day feel cinematic — the portraits are intimate and
+                beautiful. Professional, punctual and calm under pressure."
+              </p>
+            </article>
+
+            <article class="testi" role="listitem">
+              <div class="testi-row">
+                <img
+                  class="avatar"
+                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&auto=format&fit=crop"
+                  alt="Maira H"
+                />
+                <div>
+                  <strong>Maira H.</strong>
+                  <div style="font-size: 13px; color: var(--muted)">
+                    Editorial Director, Berlin
+                  </div>
+                </div>
+              </div>
+              <p style="margin-top: 12px">
+                "Exceptional mood and color control. The editorial spread
+                exceeded our creative brief — highly recommend for brand
+                shoots."
+              </p>
+            </article>
+
+            <article class="testi" role="listitem">
+              <div class="testi-row">
+                <img
+                  class="avatar"
+                  src="https://images.unsplash.com/photo-1701615004837-40d8573b6652?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  alt="Reena P"
+                />
+                <div>
+                  <strong>Reena P.</strong>
+                  <div style="font-size: 13px; color: var(--muted)">
+                    Event Manager, Mumbai
+                  </div>
+                </div>
+              </div>
+              <p style="margin-top: 12px">
+                "He captured our corporate event with such elegance. Every
+                moment looked iconic — the team loved the delivery."
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact" class="section" aria-labelledby="contact-title">
+          <h2 id="contact-title" class="section-title">Contact & Booking</h2>
+          <div class="contact-grid">
+            <form
+              id="contactForm"
+              onsubmit="event.preventDefault(); sendContact();"
+              aria-label="Contact form"
+            >
+              <label class="sr-only" for="name">Full name</label>
+              <input id="name" name="name" placeholder="Full name" required />
+
+              <label class="sr-only" for="email">Email</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Email"
+                required
+              />
+
+              <label class="sr-only" for="phone">Phone</label>
+              <input id="phone" name="phone" placeholder="Phone (optional)" />
+
+              <label class="sr-only" for="message">Message</label>
+              <textarea
+                id="message"
+                name="message"
+                placeholder="Tell me about your project"
+                required
+              ></textarea>
+
+              <div style="display: flex; gap: 8px; margin-top: 10px">
+                <button class="hire" type="submit">Send</button>
+                <button
+                  type="button"
+                  onclick="document.getElementById('contactForm').reset()"
+                  class="icon"
+                  title="Reset form"
+                >
+                  <i class="fa-solid fa-rotate" aria-hidden="true"></i>
+                </button>
+              </div>
+            </form>
+
+            <aside
+              aria-labelledby="studio-title"
+              style="
+                padding: 18px;
+                border-radius: 12px;
+                border: 1px solid var(--glass-border);
+                background: linear-gradient(
+                  180deg,
+                  rgba(255, 255, 255, 0.01),
+                  rgba(255, 255, 255, 0.005)
+                );
+                backdrop-filter: blur(6px);
+              "
+            >
+              <h4 id="studio-title" style="margin: 0 0 8px">Studio</h4>
+              <p style="margin: 6px 0">
+                Email:
+                <a href="mailto:rd.photography@example.com"
+                  >rd.photography@example.com</a
+                >
+              </p>
+              <p style="margin: 6px 0">Phone: +91 98765 43210</p>
+              <p style="margin: 6px 0">
+                Studio: MG Road, Indore, Madhya Pradesh
+              </p>
+              <p style="margin: 6px 0">
+                Availability: Weekdays & weekends (by appointment)
+              </p>
+
+              <h5 style="margin-top: 12px">What I deliver</h5>
+              <ul
+                style="
+                  margin: 8px 0 0 18px;
+                  line-height: 1.6;
+                  color: var(--muted);
+                "
+              >
+                <li>High-resolution edited photos (color & B&W)</li>
+                <li>Online gallery for sharing & downloads</li>
+                <li>Print-ready files and albums (on request)</li>
+                <li>Fast turnarounds (48–72 hours for sessions)</li>
+              </ul>
+
+              <div style="margin-top: 12px; display: flex; gap: 8px">
+                <a
+                  class="icon"
+                  href="https://instagram.com"
+                  title="Instagram"
+                  target="_blank"
+                  rel="noopener"
+                  ><i class="fab fa-instagram" aria-hidden="true"></i
+                ></a>
+                <a
+                  class="icon"
+                  href="https://behance.net"
+                  title="Behance"
+                  target="_blank"
+                  rel="noopener"
+                  ><i class="fab fa-behance" aria-hidden="true"></i
+                ></a>
+                <a
+                  class="icon"
+                  href="https://linkedin.com"
+                  title="LinkedIn"
+                  target="_blank"
+                  rel="noopener"
+                  ><i class="fab fa-linkedin" aria-hidden="true"></i
+                ></a>
+                <a
+                  class="icon"
+                  href="https://youtube.com"
+                  title="YouTube"
+                  target="_blank"
+                  rel="noopener"
+                  ><i class="fab fa-youtube" aria-hidden="true"></i
+                ></a>
+              </div>
+            </aside>
+          </div>
+        </section>
+      </main>
+
+      <footer role="contentinfo" style="margin-top: 28px">
+        <div>© 2025 RD Photography • Crafted with intention</div>
+      </footer>
+    </div>
+
+    <!-- LIGHTBOX -->
+    <div
+      id="lightbox"
+      class="lightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+      onclick="closeLightbox(event)"
+    >
+      <img id="lightboxImg" src="" alt="Expanded photo" />
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite">
+      Message sent — thanks! I’ll reply soon.
+    </div>
+
+    <script>
+      /* -------------------- SAMPLE DATA -------------------- */
+      const PHOTOS = [
+        {
+          id: 1,
+          title: 'Monsoon Portrait',
+          tag: 'portrait',
+          img: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1600&auto=format&fit=crop',
+          desc: 'Natural light portrait — monsoon series.',
+        },
+        {
+          id: 2,
+          title: 'Rural Roads',
+          tag: 'travel',
+          img: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1600&auto=format&fit=crop',
+          desc: 'Cinematic travel capture.',
+        },
+        {
+          id: 3,
+          title: 'City Lines',
+          tag: 'street',
+          img: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1600&auto=format&fit=crop',
+          desc: 'Black & white street moment.',
+        },
+        {
+          id: 4,
+          title: 'Golden Hour Wedding',
+          tag: 'wedding',
+          img: 'https://images.unsplash.com/photo-1563212367-15d0a50b98f5?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+          desc: 'Couple at golden hour.',
+        },
+        {
+          id: 5,
+          title: 'The Thinker',
+          tag: 'portrait',
+          img: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?q=80&w=1600&auto=format&fit=crop',
+          desc: 'Studio-inspired portrait.',
+        },
+        {
+          id: 6,
+          title: 'Wander Mountains',
+          tag: 'travel',
+          img: 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=1600&auto=format&fit=crop',
+          desc: 'High altitude landscape.',
+        },
+        {
+          id: 7,
+          title: 'Street Rhythm',
+          tag: 'street',
+          img: 'https://images.unsplash.com/photo-1505678261036-a3fcc5e884ee?q=80&w=1600&auto=format&fit=crop',
+          desc: 'Candid street rhythm.',
+        },
+        {
+          id: 8,
+          title: 'Bride & Light',
+          tag: 'wedding',
+          img: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?q=80&w=1600&auto=format&fit=crop',
+          desc: 'Editorial wedding shot.',
+        },
+        // extra items to make grid feel full
+        {
+          id: 9,
+          title: 'Cozy Portrait',
+          tag: 'portrait',
+          img: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1600&auto=format&fit=crop',
+          desc: 'Warm indoor portrait.',
+        },
+        {
+          id: 10,
+          title: 'Ocean Drive',
+          tag: 'travel',
+          img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1600&auto=format&fit=crop',
+          desc: 'Seascape at dusk.',
+        },
+        {
+          id: 11,
+          title: 'Market Street',
+          tag: 'street',
+          img: 'https://images.unsplash.com/photo-1572001365088-71b1d42fb8b6?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+          desc: 'Vibrant street scene.',
+        },
+        {
+          id: 12,
+          title: 'Rituals & Light',
+          tag: 'wedding',
+          img: 'https://images.unsplash.com/photo-1630764883473-e8c2056f0589?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+          desc: 'Ceremony moments.',
+        },
+      ];
+
+      /* -------------------- PRELOADER FADE -------------------- */
+      window.addEventListener('load', () => {
+        const pre = document.getElementById('preloader');
+        pre.style.transition = 'opacity .7s ease';
+        setTimeout(() => (pre.style.opacity = '0'), 600);
+        setTimeout(() => {
+          if (pre.parentNode) pre.parentNode.removeChild(pre);
+        }, 1400);
+      });
+
+      /* -------------------- THEME TOGGLE -------------------- */
+      const themeBtn = document.getElementById('themeToggle');
+      const body = document.body;
+      const saved = localStorage.getItem('rd_theme');
+      if (saved === 'light') body.classList.add('light');
+      updateThemeIcon();
+      themeBtn.addEventListener('click', () => {
+        body.classList.toggle('light');
+        localStorage.setItem(
+          'rd_theme',
+          body.classList.contains('light') ? 'light' : 'dark'
+        );
+        updateThemeIcon();
+      });
+      function updateThemeIcon() {
+        themeBtn.innerHTML = body.classList.contains('light')
+          ? "<i class='fa-solid fa-sun' aria-hidden='true'></i>"
+          : "<i class='fa-solid fa-moon' aria-hidden='true'></i>";
+      }
+
+      /* -------------------- HEADER AUTO-HIDE -------------------- */
+      let lastScroll = 0;
+      const header = document.getElementById('siteHeader');
+      window.addEventListener('scroll', () => {
+        const s = window.scrollY;
+        if (s > lastScroll && s > 120) {
+          header.classList.add('hidden');
+        } else {
+          header.classList.remove('hidden');
+        }
+        lastScroll = s;
+      });
+
+      /* -------------------- RENDER GRID & FILTER -------------------- */
+      const grid = document.getElementById('grid');
+      function render(list) {
+        grid.setAttribute('aria-busy', 'true');
+        grid.innerHTML = '';
+        list.forEach((p) => {
+          const card = document.createElement('article');
+          card.className = 'card';
+          card.setAttribute('data-tag', p.tag);
+          card.innerHTML = `<img loading="lazy" src="${
+            p.img
+          }" alt="${escapeHtml(p.title)}"/><div class="meta"><h4>${escapeHtml(
+            p.title
+          )}</h4><p>${escapeHtml(p.desc)}</p></div>`;
+          card.addEventListener('click', () => openLightbox(p.img, p.title));
+          grid.appendChild(card);
+        });
+        // small delay to allow DOM insert before observing
+        requestAnimationFrame(() => {
+          observeReveal();
+          grid.setAttribute('aria-busy', 'false');
+        });
+      }
+      render(PHOTOS);
+
+      // filter chips
+      document.querySelectorAll('.chip').forEach((chip) =>
+        chip.addEventListener('click', () => {
+          document
+            .querySelectorAll('.chip')
+            .forEach((c) => c.classList.remove('active'));
+          chip.classList.add('active');
+          const f = chip.getAttribute('data-filter');
+          if (f === '*') render(PHOTOS);
+          else render(PHOTOS.filter((x) => x.tag === f));
+        })
+      );
+
+      /* -------------------- REVEAL ON SCROLL -------------------- */
+      function observeReveal() {
+        const items = document.querySelectorAll('.card');
+        const io = new IntersectionObserver(
+          (entries, obs) => {
+            entries.forEach((en) => {
+              if (en.isIntersecting) {
+                en.target.classList.add('revealed');
+                obs.unobserve(en.target);
+              }
+            });
+          },
+          { threshold: 0.12 }
+        );
+        items.forEach((i) => io.observe(i));
+      }
+
+      /* -------------------- LIGHTBOX -------------------- */
+      const lightbox = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lightboxImg');
+      function openLightbox(src, alt = '') {
+        lbImg.src = src;
+        lbImg.alt = alt;
+        lightbox.classList.add('open');
+        lightbox.setAttribute('aria-hidden', 'false');
+      }
+      function closeLightbox(e) {
+        if (e.target === lightbox || (e && e.key === 'Escape')) {
+          lightbox.classList.remove('open');
+          lightbox.setAttribute('aria-hidden', 'true');
+          lbImg.src = '';
+        }
+      }
+      lightbox.addEventListener('click', closeLightbox);
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeLightbox(e);
+      });
+
+      /* -------------------- CONTACT FORM (demo) -------------------- */
+      function sendContact() {
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const msg = document.getElementById('message').value.trim();
+        if (!name || !email || !msg) {
+          alert('Please fill required fields');
+          return;
+        }
+        showToast('Message sent — thanks! I’ll reply soon.');
+        document.getElementById('contactForm').reset();
+      }
+
+      /* -------------------- TOAST -------------------- */
+      const toast = document.getElementById('toast');
+      let toastTimer = null;
+      function showToast(txt) {
+        toast.textContent = txt;
+        toast.style.display = 'block';
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toast.style.display = 'none';
+        }, 3200);
+      }
+
+      /* -------------------- ACCESSIBILITY HELPERS -------------------- */
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab') document.body.classList.add('show-focus');
+      });
+
+      /* -------------------- Small parallax on hero images (subtle) -------------------- */
+      const miniImgs = document.querySelectorAll('.mini img, .mini-grid img');
+      window.addEventListener('mousemove', (e) => {
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        const x = ((e.clientX - w / 2) / w) * 10;
+        const y = ((e.clientY - h / 2) / h) * 8;
+        document
+          .querySelectorAll('.mini img, .mini-grid img')
+          .forEach((img, i) => {
+            img.style.transform = `translate(${x * (i + 1)}px, ${
+              y * (i + 1)
+            }px) rotate(${x * (i + 0.5)}deg)`;
+          });
+      });
+
+      /* -------------------- SMALL HELPERS -------------------- */
+      function escapeHtml(str) {
+        return String(str).replace(
+          /[&<>"']/g,
+          (m) =>
+            ({
+              '&': '&amp;',
+              '<': '&lt;',
+              '>': '&gt;',
+              '"': '&quot;',
+              "'": '&#39;',
+            }[m])
+        );
+      }
+
+      // ensure lightbox closes on click outside image and on Escape already handled
+      // ensure preloader removed if user navigates quickly
+      setTimeout(() => {
+        const pre = document.getElementById('preloader');
+        if (pre) {
+          pre.style.opacity = '0';
+          setTimeout(() => {
+            if (pre.parentNode) pre.parentNode.removeChild(pre);
+          }, 650);
+        }
+      }, 3000);
+    </script>
+  </body>
+</html>
